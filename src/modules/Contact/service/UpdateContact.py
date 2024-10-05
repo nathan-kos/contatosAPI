@@ -9,5 +9,11 @@ class UpdateContact:
 
         if not contact:
             raise ValueError("Contact not found");
+    
+        if email & "@" not in email:
+            raise ValueError("Invalid email address");
+    
+        if phone & len(phone) != 10:
+            raise ValueError("Invalid phone number");
 
         return await self.contact_repository.update_contact(contact_id, name, email, phone);
