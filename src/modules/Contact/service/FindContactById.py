@@ -1,3 +1,5 @@
+from  ....shared.exceptions.EntityNotFound import EntityNotFound
+
 class FindContactById:
     def __init__(self, contact_repository):
         self.contact_repository = contact_repository;
@@ -7,6 +9,6 @@ class FindContactById:
         contact = await self.contact_repository.get_contact(con_id);
 
         if not contact:
-            raise ValueError("Contact not found");
+            raise EntityNotFound("Contact not found");
     
         return contact;

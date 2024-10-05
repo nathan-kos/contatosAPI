@@ -1,3 +1,4 @@
+from  ....shared.exceptions.BadRequest import BadRequest
 
 class CreateContact:
     def __init__(self, contact_repository):
@@ -6,15 +7,15 @@ class CreateContact:
     async def execute(self, name, email, phone):
         # validate inputs
         if not name or not email or not phone:
-            raise ValueError('Invalid input');
+            raise BadRequest('Invalid input');
 
         # Validate email
         if("@" not in email):
-            raise ValueError("Invalid email");
+            raise BadRequest("Invalid email");
 
         # Validate phone
         if(len(phone) < 10):
-            raise ValueError("Invalid phone number");
+            raise BadRequest("Invalid phone number");
 
         contact = await self.contact_repository.create_contact(name, email, phone);
 

@@ -1,3 +1,4 @@
+from  ....shared.exceptions.EntityNotFound import EntityNotFound
 
 class DeleteContact:
     def __init__(self, contact_repository):
@@ -7,6 +8,6 @@ class DeleteContact:
         contact = await self.contact_repository.get_contact(con_id);
 
         if not contact:
-            raise ValueError("Contact not found");
+            raise EntityNotFound("Contact not found");
         
         return await self.contact_repository.delete_contact(con_id);

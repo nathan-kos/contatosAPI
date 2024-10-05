@@ -1,3 +1,5 @@
+from  ....shared.exceptions.BadRequest import BadRequest
+from  ....shared.exceptions.EntityNotFound import EntityNotFound
 
 class UpdateContact:
     def __init__(self, contact_repository):
@@ -8,12 +10,12 @@ class UpdateContact:
         contact = await self.contact_repository.get_contact(contact_id);
 
         if not contact:
-            raise ValueError("Contact not found");
+            raise EntityNotFound("Contact not found");
     
         if email and "@" not in email:
-            raise ValueError("Invalid email address");
+            raise BadRequest("Invalid email");
     
         if phone and len(phone) < 9:
-            raise ValueError("Invalid phone number");
+            raise BadRequest("Invalid phone number");
 
         return await self.contact_repository.update_contact(contact_id, name, email, phone);
