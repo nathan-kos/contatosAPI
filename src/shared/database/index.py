@@ -2,14 +2,16 @@ from tortoise import Tortoise
 import os
 from dotenv import load_dotenv
 
-#Carrega as variáveis de ambiente
+#Load the environment variables
 load_dotenv()
 
 async def init():
     await Tortoise.init(
+        # If you want to use other database, you can change the DATABASE_URL on the .env file
         db_url=os.getenv('DATABASE_URL'),
-        modules={"models": ["src.shared.database.models"]},  # Ajuste o caminho para os modelos 
+        modules={"models": ["src.shared.database.models"]},
     )
+    # Generate the schema
     await Tortoise.generate_schemas()
 
 async def shutdown():

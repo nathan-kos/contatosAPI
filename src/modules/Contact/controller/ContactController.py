@@ -18,6 +18,7 @@ async def list_contacts():
         service = ListContact.ListContact(repository);
         contacts = await service.execute();
         return contacts;
+    # Verify raised exceptions
     except EntityNotFound as e:
         raise HTTPException(status_code=404, detail=str(e));
     except Exception as e:
@@ -31,6 +32,7 @@ async def get_contact(con_id: UUID):
         service = FindContactById.FindContactById(repository);
         contact = await service.execute(con_id);
         return contact;
+    # Verify raised exceptions
     except EntityNotFound as e:
         raise HTTPException(status_code=404, detail=str(e));
     except Exception as e:
@@ -43,6 +45,7 @@ async def delete_contact(con_id: UUID):
         service = DeleteContact.DeleteContact(repository);
         await service.execute(con_id);
         return {"message": "Contact deleted"};
+    # Verify raised exceptions
     except EntityNotFound as e:
         raise HTTPException(status_code=404, detail=str(e));
     except Exception as e:
@@ -55,6 +58,7 @@ async def create_contact(contact: ContactCreateModel):
         service = CreateContact.CreateContact(repository);
         newContact = await service.execute(contact.con_name, contact.con_email, contact.con_phone);
         return newContact;
+    # Verify raised exceptions
     except BadRequest as e:
         raise HTTPException(status_code=400, detail=str(e));
     except EntityNotFound as e:
@@ -69,6 +73,7 @@ async def update_contact(con_id: UUID, contact: ContactUpdateModel):
         service = UpdateContact.UpdateContact(repository);
         contact = await service.execute(con_id, contact.con_name, contact.con_email, contact.con_phone);
         return contact;
+    # Verify raised exceptions
     except BadRequest as e:
         raise HTTPException(status_code=400, detail=str(e));
     except EntityNotFound as e:

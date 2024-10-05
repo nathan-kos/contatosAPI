@@ -12,6 +12,7 @@ class UpdateContact:
         if not contact:
             raise EntityNotFound("Contact not found");
     
+        #Validate inputs
         if email and "@" not in email:
             raise BadRequest("Invalid email");
     

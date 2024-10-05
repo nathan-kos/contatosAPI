@@ -6,11 +6,12 @@ app = FastAPI()
 
 async def lifespan(app: FastAPI):
     await init()
-    yield
+    yield # Runnig the application
     await shutdown()
 
 app = FastAPI(lifespan=lifespan)
 
+# Include the routes
 app.include_router(ContactController.router, prefix="/contacts")
 
 @app.get("/")
