@@ -1,10 +1,13 @@
 from uuid import UUID
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from ..repository.ContactRepository import ContactRepository
 from ..service import CreateContact, DeleteContact, FindContactById, ListContact, UpdateContact
 
 from .Validator.Models import ContactCreateModel, ContactUpdateModel
+
+from  ....shared.exceptions.BadRequest import BadRequest
+from  ....shared.exceptions.EntityNotFound import EntityNotFound
 
 router = APIRouter()
 
@@ -15,8 +18,11 @@ async def list_contacts():
         service = ListContact.ListContact(repository);
         contacts = await service.execute();
         return contacts;
+    except EntityNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e));
     except Exception as e:
-        return {"error": str(e)};
+        raise HTTPException(status_code=500, detail=str(e));
+
 
 @router.get("/{con_id}")
 async def get_contact(con_id: UUID):
@@ -25,8 +31,10 @@ async def get_contact(con_id: UUID):
         service = FindContactById.FindContactById(repository);
         contact = await service.execute(con_id);
         return contact;
+    except EntityNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e));
     except Exception as e:
-        return {"error": str(e)};
+        raise HTTPException(status_code=500, detail=str(e));
 
 @router.delete("/{con_id}")
 async def delete_contact(con_id: UUID):
@@ -35,8 +43,10 @@ async def delete_contact(con_id: UUID):
         service = DeleteContact.DeleteContact(repository);
         await service.execute(con_id);
         return {"message": "Contact deleted"};
+    except EntityNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e));
     except Exception as e:
-        return {"error": str(e)};
+        raise HTTPException(status_code=500, detail=str(e));
 
 @router.post("/")
 async def create_contact(contact: ContactCreateModel):
@@ -45,8 +55,12 @@ async def create_contact(contact: ContactCreateModel):
         service = CreateContact.CreateContact(repository);
         newContact = await service.execute(contact.con_name, contact.con_email, contact.con_phone);
         return newContact;
+    except BadRequest as e:
+        raise HTTPException(status_code=400, detail=str(e));
+    except EntityNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e));
     except Exception as e:
-        return {"error": str(e)};
+        raise HTTPException(status_code=500, detail=str(e));
 
 @router.put("/{con_id}")
 async def update_contact(con_id: UUID, contact: ContactUpdateModel):
@@ -55,5 +69,9 @@ async def update_contact(con_id: UUID, contact: ContactUpdateModel):
         service = UpdateContact.UpdateContact(repository);
         contact = await service.execute(con_id, contact.con_name, contact.con_email, contact.con_phone);
         return contact;
+    except BadRequest as e:
+        raise HTTPException(status_code=400, detail=str(e));
+    except EntityNotFound as e:
+        raise HTTPException(status_code=404, detail=str(e));
     except Exception as e:
-        return {"error": str(e)};
+        raise HTTPException(status_code=500, detail=str(e));
