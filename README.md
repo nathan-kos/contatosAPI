@@ -8,8 +8,9 @@
 
 #### Configurar o banco de dados
 
-- O projeto utiliza tortoise-orm com banco de dados postgresql, caso deseje utilizar MySQL, altere a variável `DATABASE_URL` no arquivo `.env` para a url do banco de dados desejado.
+- O projeto utiliza tortoise-orm. Para configurar o banco de dados, copie o arquivo `.env.example` para `.env` e configure a variável de ambiente `DATABASE_URL` com a url de conexão do banco de dados
   - Exemplo: `DATABASE_URL=mysql://user:password@localhost:3306/database`
+  - Não esqueça de criar o banco de dados antes de rodar o projeto
 
 #### Subir a API
 
