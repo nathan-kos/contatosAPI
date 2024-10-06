@@ -13,7 +13,7 @@
 
 #### Subir a API
 
-- Execute o comando `uvicorn main:app --reload` para subir a API
+- Execute o comando `python -m uvicorn main:app --reload` para subir a API
 
 ```
 Para acessar a API utilize a url http://127.0.0.1:8000
